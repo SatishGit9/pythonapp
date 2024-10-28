@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Employee Registration Form</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #7048e8;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        form {
+            background: white;
+            padding: 20px;
+            width: 350px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            color: #7048e8;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .error-message {
+            color: red;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+        .success-message {
+            display: none; /* Initially hidden */
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: #7048e8;
+            color: white;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        }
+        input[type="text"], input[type="email"], input[type="number"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            width: 100%;
+            padding: 10px 0;
+            background-color: #5737d9;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #4428b3;
+        }
+    </style>
+    <script>
+        // Function to display the success message for 5 seconds if 'success=true' is in the URL
+        function checkForSuccess() {
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.get('success') === 'true') {
+                const successMessage = document.getElementById("successMessage");
+                successMessage.style.display = "block";
+                setTimeout(() => {
+                    successMessage.style.display = "none";
+                    // Remove 'success' from URL without reloading the page
+                    urlParams.delete('success');
+                    window.history.replaceState({}, document.title, window.location.pathname);
+                }, 5000); // Hide after 5 seconds
+            }
+        }
+
+        // Retain form data if it was passed in the URL parameters
+        function retainFormData() {
+            const urlParams = new URLSearchParams(window.location.search);
+            document.getElementById("first_name").value = urlParams.get("first_name") || '';
+            document.getElementById("last_name").value = urlParams.get("last_name") || '';
+            document.getElementById("email").value = urlParams.get("email") || '';
+            document.getElementById("phone_number").value = urlParams.get("phone_number") || '';
+            document.getElementById("company").value = urlParams.get("company") || '';
+            document.getElementById("job_role").value = urlParams.get("job_role") || '';
+
+            // Display the error message if there is an 'error' parameter in the URL
+            const errorMessage = urlParams.get("error");
+            if (errorMessage) {
+                document.getElementById("errorMessage").textContent = errorMessage;
+            }
+        }
+    </script>
+</head>
+<body onload="retainFormData(); checkForSuccess();">
+    <!-- Success message dialog box -->
+    <div id="successMessage" class="success-message">
+        <p>Your information has been saved successfully!</p>
+    </div>
+
+    <form method="post">
+        <h1>Employee Registration</h1>
+        
+        <!-- Error message display -->
+        <div id="errorMessage" class="error-message"></div>
+
+        <label for="first_name">First Name:</label>
+        <input type="text" id="first_name" name="first_name" required>
+
+        <label for="last_name">Last Name:</label>
+        <input type="text" id="last_name" name="last_name" required>
+
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required>
+
+        <label for="phone_number">Phone Number:</label>
+        <input type="text" id="phone_number" name="phone_number" required>
+
+        <label for="company">Company:</label>
+        <input type="text" id="company" name="company" required>
+
+        <label for="job_role">Job Role:</label>
+        <input type="text" id="job_role" name="job_role" required>
+
+        <button type="submit">Save</button>
+    </form>
+</body>
+</html>
